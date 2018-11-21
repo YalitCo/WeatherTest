@@ -1,0 +1,129 @@
+@font-face {
+    font-family:iransans;
+    src:url(font/iransans_light.ttf);
+}
+
+
+body{
+    min-height: 700px;
+    margin:0;
+    padding: 0;
+    background-image: linear-gradient(to top, #071542, #5A6A9A);
+    direction: rtl;
+    font-family: iransans;
+}
+
+.con{
+    overflow: hidden;
+    margin:60px auto;
+}
+
+.con > h1{
+    color: #fff;
+    text-align: center;
+}
+
+.con > .search_box{
+    height: 70px;
+}
+
+.con > .search_box > .search{
+    display: block;
+    margin: 0 auto;
+    height: 100%;
+    font-size: 30px;
+    padding: 5px 20px;
+    border-radius: 20px;
+    border:0 none;
+    position: relative;
+    font-family: iransans;
+}
+
+.con > .search_box > .search_butt{
+    cursor:pointer;
+    width: 100px;
+    background: #233260 url('pics/search_icon.png') no-repeat 50%;
+    background-size: 35%;
+    height: 60px;
+    border:0 none;
+    border-radius: 20px;
+    position: absolute;
+    left: 10%;
+    top: 4px;
+}
+
+.con > .row{
+    overflow: hidden;
+    margin: 30px auto;
+} 
+
+.con > .row > .items{
+    min-height: 350px;
+}
+
+.con > .row > .items > .item{
+    width: 100%;
+    margin: 5px auto;
+    margin-bottom: 10px;
+    background:rgba(255, 255, 255, 0.425);
+    /* border:0.1px solid rgba(255, 255, 255, 0.425); */
+    border-radius: 20px;
+    overflow: hidden;
+    min-height: 350px;
+}
+
+.con > .row > .items > .item > img{
+    display: block;
+    margin: 0px auto;
+    width: 70%;
+}
+
+.con > .row > .items > .item > h2{
+    color:#fff;
+    margin:0;
+    margin-right: 20px;
+    float: right;
+    line-height: 60px;
+}
+
+.con > .row > .items > .item > h1{
+    color:#fff;
+    float: left;
+    margin: 0;
+    margin-left: 20px;
+    display: inline-block;
+}
+
+/* .con > .row > .items > .item > h1 > .temp_icon{
+    color: red;
+} */
+
+.con > .row > .items > .item > h1 > img{
+    width: 10px;
+}
+
+.con > .row > .items > .item > span{
+    display: inline-block;
+    color:#feffd6;
+    width: 90%;
+    text-align: center;
+    margin-top:10px;
+    padding-right: 10px;
+}
+
+
+
+@media screen and (max-width:992px){
+    .con > .search_box > .search_butt{
+        width: 80px;
+        left: 20px;
+    }
+
+}
+
+
+@media screen and (max-width:576px){
+    .con > .search_box > .search{
+        font-size: 20px;
+    }
+}
