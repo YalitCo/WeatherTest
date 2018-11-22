@@ -23,40 +23,10 @@
                 <div class="item">
                     <img src="pics/rad.png">
                     <h2> بابل </h2>
-                    <h1>15°c <img src="pics/temp_icon.png"> </h1>
+                    <img class="icon" src="pics/temp_icon.png">
+                    <h1>15°c</h1>
                     <!-- <i class="fas fa-thermometer-half temp_icon"></i> -->
-                    <span>توضیحات بیشتر و یا نمودار مربوط
-                    به پیش بینی هوای روز های آینده  </span>
-                </div>
-            </div>
-            <div class="items col-lg-3 col-md-4 col-sm-6"> 
-                    <div class="item">
-                        <img src="pics/half_cloudy.png">
-                        <h2> بابلسر </h2>
-                        <h1>19°c <img src="pics/temp_icon.png"> </h1>
-                        <!-- <i class="fas fa-thermometer-half temp_icon"></i> -->
-                        <span>توضیحات بیشتر و یا نمودار مربوط
-                        به پیش بینی هوای روز های آینده  </span>
-                    </div>
-            </div>
-            <div class="items col-lg-3 col-md-4 col-sm-6">
-                <div class="item">
-                    <img src="pics/snow.png">
-                    <h2> بیرجند </h2>
-                    <h1>4°c- <img src="pics/temp_icon.png"> </h1>
-                    <!-- <i class="fas fa-thermometer-half temp_icon"></i> -->
-                    <span>توضیحات بیشتر و یا نمودار مربوط
-                    به پیش بینی هوای روز های آینده  </span>
-                </div>
-            </div>
-            <div class="items col-lg-3 col-md-4 col-sm-6">
-                <div class="item">
-                    <img src="pics/sun.png">
-                    <h2> بناب </h2>
-                    <h1>21°c <img src="pics/temp_icon.png"> </h1>
-                    <!-- <i class="fas fa-thermometer-half temp_icon"></i> -->
-                    <span>توضیحات بیشتر و یا نمودار مربوط
-                    به پیش بینی هوای روز های آینده  </span>
+                    <span>توضیحات بیشتر و یا نمودار مربوط به پیش بینی هوای روز های آینده  </span>
                 </div>
             </div>
             
@@ -69,14 +39,55 @@
 
 
 <script>
+    var temp,description;
+
+    $(".con > .row ").html("");
 
     function gettingJSON(){
         city = $(".search").val();
-        // alert(city);
-        url = "http://api.openweathermap.org/data/2.5/weather?q="+city+"&APPID=7ea8f559ec5f1f0899b61c89d728a8b9";
-        $.getJSON(url,function(json){
-            document.write(JSON.stringify(json));
-        });
-    }
+        url = "http://api.openweathermap.org/data/2.5/weather?q="+city+"&units=metric&APPID=7ea8f559ec5f1f0899b61c89d728a8b9";
+        $.getJSON(url,function (json,status){
+            //alert(status);
+            var mydata=JSON.stringify(json);
+            var weather_data=JSON.parse(mydata);
+            temp=Math.round(weather_data.main.temp);
+            weather_icon = weather_data.weather[0].icon;
+            weather_desc = weather_data.weather[0].description;
+            console.log(weather_icon,temp);
+    
+
+    
+    
+            console.log(temp);
+
+            
+
+
+            items = $("<div>").addClass("items col-lg-3 col-md-4 col-sm-6");
+            item = $("<div>").addClass("item");
+            im = $("<img>").attr({src: "pics/"+weather_icon+".png"});
+            h2 = $("<h2>").html(city);
+            h1 = $("<h1>").html(temp+"°c");
+            icon = $("<img>").addClass("icon").attr({src: "pics/temp_icon.png"});
+            sp = $("<span>").html(weather_desc);
+                        
+            item.append(im).append(h2).append(icon).append(h1).append(sp);
+            items.append(item);
+            $(".con > .row.error").removeClass("error").html(" ");
+            $(".con > .row ").append(items);
+            
+        }).fail(function() {
+        $(".con > .row ").html("");
+        $(".con > .row").addClass("error");
+        $(".con > .row.error ").html("شهر مورد نظر یافت نشد.").css({"color":"#fff"});  //404 not found handle
+    });    
+
+}
+
+
+
+
 
 </script>
+
+
