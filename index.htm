@@ -29,9 +29,6 @@
                     <span>توضیحات بیشتر و یا نمودار مربوط به پیش بینی هوای روز های آینده  </span>
                 </div>
             </div>
-            
-            
-            
         </div>
     </div>
 </body>
@@ -42,6 +39,7 @@
     var temp,description;
 
     $(".con > .row ").html("");
+    $(".search").val("");
 
     function gettingJSON(){
         city = $(".search").val();
@@ -53,15 +51,9 @@
             temp=Math.round(weather_data.main.temp);
             weather_icon = weather_data.weather[0].icon;
             weather_desc = weather_data.weather[0].description;
-            console.log(weather_icon,temp);
-    
-
-    
-    
-            console.log(temp);
-
             
-
+            console.log(weather_icon,temp);
+            console.log(temp);
 
             items = $("<div>").addClass("items col-lg-3 col-md-4 col-sm-6");
             item = $("<div>").addClass("item");
@@ -70,23 +62,21 @@
             h1 = $("<h1>").html(temp+"°c");
             icon = $("<img>").addClass("icon").attr({src: "pics/temp_icon.png"});
             sp = $("<span>").html(weather_desc);
-                        
+
             item.append(im).append(h2).append(icon).append(h1).append(sp);
             items.append(item);
             $(".con > .row.error").removeClass("error").html(" ");
             $(".con > .row ").append(items);
-            
+            $(".search").val("");
+
         }).fail(function() {
         $(".con > .row ").html("");
+        $(".search").val("");
         $(".con > .row").addClass("error");
         $(".con > .row.error ").html("شهر مورد نظر یافت نشد.").css({"color":"#fff"});  //404 not found handle
     });    
 
 }
-
-
-
-
 
 </script>
 
