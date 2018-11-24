@@ -13,6 +13,18 @@
     <script src="js/jquery_cookie_plugin.js"></script>
 </head>
 <body>
+    <div class="mask" onclick="hidden_modal()" >
+        <div class="modal_error col-lg-6 col-md-6 col-sm-6">
+            <h2> شهر مورد نظر پیدا نشد.&nbsp; مجدد تلاش کنید...</h2>
+        </div>
+    </div>
+
+    <script>
+        function hidden_modal(){
+            $(".mask").removeClass("show").addClass("hide");
+        }
+    </script>
+
     <div class="col-lg-12 con">
         <h1 class="col-lg-12"> هوای امروز چطوره؟</h1>
         <div class="col-lg-12 search_box">
@@ -36,59 +48,70 @@
 </html>
 
 <script>
-    //all cookies
-    // var x = document.cookie; 
-    // window.alert(x);
-
-    //delete all cookies
-    function deleteAllCookies() {
-        var cookies = document.cookie.split(";");
-
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = cookies[i];
-            var eqPos = cookie.indexOf("=");
-            var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-            document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-        }
-    }
-
-    //deleteAllCookies();
-</script>
-
-<script>
     $(".con > .row ").html("");
     $(".search").val("");
-    
-    var temp_counter = 1;
 
-    
+    var city_counter = 1;
 
+    var cookies = document.cookie.split(";");
+    for (var i = 0; i < cookies.length; i++) {
+        str=cookies[i];
+        index=str.lastIndexOf("=");
+        var city_inCookie = str.substring(index+1 , cookies[i].length);
+        //alert(city_inCookie);
+        url = "https://api.openweathermap.org/data/2.5/weather?q="+city_inCookie+"&units=metric&APPID=7ea8f559ec5f1f0899b61c89d728a8b9";
+
+        $(window).load(function() {
+            $(".con > .search_box > .search_butt").css({"background":"#233260 url('pics/loader.gif') no-repeat 50%","background-size": "35%"});
+            $.getJSON(url,function (json,status){
+
+                temp=Math.round(json.main.temp);
+                weather_icon = json.weather[0].icon;
+                weather_desc = json.weather[0].description;
+
+                items = $("<div>").addClass("items col-lg-3 col-md-4 col-sm-6");
+                item = $("<div>").addClass("item");
+                im = $("<img>").attr({src: "pics/"+weather_icon+".png"});
+                //alert(city_inCookie);
+                h2 = $("<h2>").html(json.name);
+                h1 = $("<h1>").html(temp+"°c");
+                icon = $("<img>").addClass("icon").attr({src: "pics/temp_icon.png"});
+                sp = $("<span>").html(weather_desc);
+
+                item.append(im).append(h2).append(icon).append(h1).append(sp);
+                items.append(item);
+                $(".con > .row.error").removeClass("error").html(" ");
+                $(".con > .row ").append(items);
+                $(".search").val("");
+                    
+                $(".con > .search_box > .search_butt").css({"background":"#233260 url('pics/search_icon.png') no-repeat 50%","background-size": "35%"});
+            }).fail(function() {
+                $(".con > .search_box > .search_butt").css({"background":"#233260 url('pics/search_icon.png') no-repeat 50%","background-size": "35%"});
+                });
+        });
+    }
 
 
 
     function gettingJSON(){
+
         city = $(".search").val();
+        //set cookies
+        if(city != ""){
+           if(city_counter>4){city_counter=1;}
+            $.cookie("city_"+city_counter , city, { expires : 2 } );
+            city_counter++;
+        }
+        
         url = "https://api.openweathermap.org/data/2.5/weather?q="+city+"&units=metric&APPID=7ea8f559ec5f1f0899b61c89d728a8b9";
+
+        $(".con > .search_box > .search_butt").css({"background":"#233260 url('pics/loader.gif') no-repeat 50%","background-size": "35%"});
         $.getJSON(url,function (json,status){
-            //alert(status);
-            // var mydata=JSON.stringify(json);
-            // var weather_data=JSON.parse(mydata);
-            // temp=Math.round(weather_data.main.temp);
 
             temp=Math.round(json.main.temp);
             weather_icon = json.weather[0].icon;
             weather_desc = json.weather[0].description;
             
-           //set cookies
-           if(temp_counter>4) temp_counter=1;
-            $.cookie("weather_icon_"+temp_counter , weather_icon );
-            $.cookie("weather_icon_"+temp_counter);
-            temp_counter++;
-
-            // console.log(weather_icon,temp);
-            // console.log(temp);
-
-
             items = $("<div>").addClass("items col-lg-3 col-md-4 col-sm-6");
             item = $("<div>").addClass("item");
             im = $("<img>").attr({src: "pics/"+weather_icon+".png"});
@@ -103,19 +126,24 @@
             $(".con > .row ").append(items);
             $(".search").val("");
 
+            $(".con > .search_box > .search_butt").css({"background":"#233260 url('pics/search_icon.png') no-repeat 50%","background-size": "35%"});
         }).fail(function() {
-        $(".con > .row ").html("");
-        $(".search").val("");
-        $(".con > .row").addClass("error");
-        $(".con > .row.error ").html("شهر مورد نظر یافت نشد.").css({"color":"#fff"});  //404 not found handle
-    });    
+                $(".search").val("");
+                $(".mask").removeClass("hide").addClass("show");  //404 not found handle
+                $(".con > .search_box > .search_butt").css({"background":"#233260 url('pics/search_icon.png') no-repeat 50%","background-size": "35%"});
+                $.cookie("city_"+city_counter , "" , { expires : -1 } );
+            });    
 
 }
 
 </script>
 
+
+
+
+
 <script>
-// Get the input field
+// Get the input field************************************************************
 var input = document.getElementById("search_input");
 
 // Execute a function when the user releases a key on the keyboard
@@ -131,3 +159,20 @@ input.addEventListener("keyup", function(event) {
 </script>
 
 
+
+
+<script>
+    //delete all cookies **************************************************************
+    function deleteAllCookies() {
+        var cookies = document.cookie.split(";");
+
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i];
+            var eqPos = cookie.indexOf("=");
+            var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+            document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+        }
+    }
+
+    //deleteAllCookies();
+</script>
