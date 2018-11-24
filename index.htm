@@ -10,12 +10,13 @@
     <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="bootstrap-grid.css" />
     <script src="js/jquery.js"></script>
+    <script src="js/jquery_cookie_plugin.js"></script>
 </head>
 <body>
     <div class="col-lg-12 con">
         <h1 class="col-lg-12"> هوای امروز چطوره؟</h1>
         <div class="col-lg-12 search_box">
-            <input type="text" class="col-lg-10 search" placeholder="نام شهر مورد نظر را وارد کنید"> <input type="button" class="search_butt" id = "getIt" onclick = "gettingJSON()">
+            <input type="text" id="search_input" class="col-lg-10 search" placeholder="نام شهر مورد نظر را وارد کنید"> <input type="button" id="search_butt" class="search_butt" id = "getIt" onclick = "gettingJSON()">
         </div>
 
         <div class="col-lg-10 row">
@@ -34,26 +35,59 @@
 </body>
 </html>
 
+<script>
+    //all cookies
+    // var x = document.cookie; 
+    // window.alert(x);
+
+    //delete all cookies
+    function deleteAllCookies() {
+        var cookies = document.cookie.split(";");
+
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i];
+            var eqPos = cookie.indexOf("=");
+            var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+            document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+        }
+    }
+
+    //deleteAllCookies();
+</script>
 
 <script>
-    var temp,description;
-
     $(".con > .row ").html("");
     $(".search").val("");
+    
+    var temp_counter = 1;
+
+    
+
+
+
 
     function gettingJSON(){
         city = $(".search").val();
         url = "https://api.openweathermap.org/data/2.5/weather?q="+city+"&units=metric&APPID=7ea8f559ec5f1f0899b61c89d728a8b9";
         $.getJSON(url,function (json,status){
             //alert(status);
-            var mydata=JSON.stringify(json);
-            var weather_data=JSON.parse(mydata);
-            temp=Math.round(weather_data.main.temp);
-            weather_icon = weather_data.weather[0].icon;
-            weather_desc = weather_data.weather[0].description;
+            // var mydata=JSON.stringify(json);
+            // var weather_data=JSON.parse(mydata);
+            // temp=Math.round(weather_data.main.temp);
+
+            temp=Math.round(json.main.temp);
+            weather_icon = json.weather[0].icon;
+            weather_desc = json.weather[0].description;
             
-            console.log(weather_icon,temp);
-            console.log(temp);
+           //set cookies
+           if(temp_counter>4) temp_counter=1;
+            $.cookie("weather_icon_"+temp_counter , weather_icon );
+            $.cookie("weather_icon_"+temp_counter);
+            temp_counter++;
+
+            // console.log(weather_icon,temp);
+            // console.log(temp);
+
 
             items = $("<div>").addClass("items col-lg-3 col-md-4 col-sm-6");
             item = $("<div>").addClass("item");
@@ -78,6 +112,22 @@
 
 }
 
+</script>
+
+<script>
+// Get the input field
+var input = document.getElementById("search_input");
+
+// Execute a function when the user releases a key on the keyboard
+input.addEventListener("keyup", function(event) {
+  // Cancel the default action, if needed
+  event.preventDefault();
+  // Number 13 is the "Enter" key on the keyboard
+  if (event.keyCode === 13) {
+    // Trigger the button element with a click
+    document.getElementById("search_butt").click();
+  }
+});
 </script>
 
 
