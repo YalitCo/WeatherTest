@@ -3,6 +3,9 @@
     src:url(font/iransans_light.ttf);
 }
 
+textarea:focus, input:focus{
+    outline: none;
+}
 
 body{
     min-height: 700px;
@@ -47,7 +50,7 @@ body{
     background-size: 35%;
     height: 70px;
     border:0 none;
-    border-radius: 20px;
+    border-radius: 20px 0 0 20px;
     position: absolute;
     left: 8.5%;
     top: 0px;
