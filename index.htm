@@ -48,11 +48,12 @@
 </html>
 
 <script>
-    $(".con > .row ").html("");
-    $(".search").val("");
+$(".con > .row ").html("");
+$(".search").val("");
 
-    var city_counter = 1;
+var city_counter = 1;
 
+$(window).load(function() {
     var cookies = document.cookie.split(";");
     for (var i = 0; i < cookies.length; i++) {
         str=cookies[i];
@@ -61,35 +62,34 @@
         //alert(city_inCookie);
         url = "https://api.openweathermap.org/data/2.5/weather?q="+city_inCookie+"&units=metric&APPID=7ea8f559ec5f1f0899b61c89d728a8b9";
 
-        $(window).load(function() {
-            $(".con > .search_box > .search_butt").css({"background":"#233260 url('pics/loader.gif') no-repeat 50%","background-size": "35%"});
-            $.getJSON(url,function (json,status){
+        $(".con > .search_box > .search_butt").css({"background":"#233260 url('pics/loader.gif') no-repeat 50%","background-size": "35%"});
+        $.getJSON(url,function (json,status){
 
-                temp=Math.round(json.main.temp);
-                weather_icon = json.weather[0].icon;
-                weather_desc = json.weather[0].description;
+            temp=Math.round(json.main.temp);
+            weather_icon = json.weather[0].icon;
+            weather_desc = json.weather[0].description;
 
-                items = $("<div>").addClass("items col-lg-3 col-md-4 col-sm-6");
-                item = $("<div>").addClass("item");
-                im = $("<img>").attr({src: "pics/"+weather_icon+".png"});
-                //alert(city_inCookie);
-                h2 = $("<h2>").html(json.name);
-                h1 = $("<h1>").html(temp+"°c");
-                icon = $("<img>").addClass("icon").attr({src: "pics/temp_icon.png"});
-                sp = $("<span>").html(weather_desc);
+            items = $("<div>").addClass("items col-lg-3 col-md-4 col-sm-6");
+            item = $("<div>").addClass("item");
+            im = $("<img>").attr({src: "pics/"+weather_icon+".png"});
+            //alert(city_inCookie);
+            h2 = $("<h2>").html(json.name);
+            h1 = $("<h1>").html(temp+"°c");
+            icon = $("<img>").addClass("icon").attr({src: "pics/temp_icon.png"});
+            sp = $("<span>").html(weather_desc);
 
-                item.append(im).append(h2).append(icon).append(h1).append(sp);
-                items.append(item);
-                $(".con > .row.error").removeClass("error").html(" ");
-                $(".con > .row ").append(items);
-                $(".search").val("");
-                    
-                $(".con > .search_box > .search_butt").css({"background":"#233260 url('pics/search_icon.png') no-repeat 50%","background-size": "35%"});
-            }).fail(function() {
-                $(".con > .search_box > .search_butt").css({"background":"#233260 url('pics/search_icon.png') no-repeat 50%","background-size": "35%"});
-                });
+            item.append(im).append(h2).append(icon).append(h1).append(sp);
+            items.append(item);
+            $(".con > .row.error").removeClass("error").html(" ");
+            $(".con > .row ").append(items);
+            $(".search").val("");
+                
+            $(".con > .search_box > .search_butt").css({"background":"#233260 url('pics/search_icon.png') no-repeat 50%","background-size": "35%"});
+        }).fail(function() {
+            $(".con > .search_box > .search_butt").css({"background":"#233260 url('pics/search_icon.png') no-repeat 50%","background-size": "35%"});
         });
     }
+});
 
 
 
@@ -128,11 +128,11 @@
 
             $(".con > .search_box > .search_butt").css({"background":"#233260 url('pics/search_icon.png') no-repeat 50%","background-size": "35%"});
         }).fail(function() {
-                $(".search").val("");
-                $(".mask").removeClass("hide").addClass("show");  //404 not found handle
-                $(".con > .search_box > .search_butt").css({"background":"#233260 url('pics/search_icon.png') no-repeat 50%","background-size": "35%"});
-                $.cookie("city_"+city_counter , "" , { expires : -1 } );
-            });    
+            $(".search").val("");
+            $(".mask").removeClass("hide").addClass("show");  //404 not found handle
+            $(".con > .search_box > .search_butt").css({"background":"#233260 url('pics/search_icon.png') no-repeat 50%","background-size": "35%"});
+            $.cookie("city_"+city_counter , "" , { expires : -1 } );
+        });    
 
 }
 
