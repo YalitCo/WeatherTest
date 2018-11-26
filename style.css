@@ -102,8 +102,8 @@ body{
 .con > .search_box > .search_butt:hover{
     background: orange url('pics/search_icon.png') no-repeat 50%;
     background-size: 35%;
-    border: 5px solid rgb(182, 121, 8);
-    border-bottom: 8px solid rgb(182, 121, 8);
+    border: 5px solid orange;
+    border-bottom: 8px solid orange;
     transition: 0.3s;
 }
 
