@@ -15,7 +15,7 @@
 <body>
     <div class="mask" onclick="hidden_modal()" >
         <div class="modal_error col-lg-6 col-md-6 col-sm-6 col-xs-6">
-            <h2> شهر مورد نظر پیدا نشد. &nbsp; مجدد تلاش کنید...</h2>
+            <h2> شهر مورد نظر پیدا نشد. &nbsp; مجدد تلاش کنید...  </h2>
         </div>
     </div>
 
@@ -68,6 +68,7 @@ $(window).load(function() {
             temp=Math.round(json.main.temp);
             weather_icon = json.weather[0].icon;
             weather_desc = json.weather[0].description;
+            
 
             items = $("<div>").addClass("items col-lg-3 col-md-4 col-sm-6");
             item = $("<div>").addClass("item");
@@ -100,7 +101,6 @@ function gettingJSON(){
     if(city != ""){
         if(city_counter>4) city_counter=1;
        
-        
         url = "https://api.openweathermap.org/data/2.5/weather?q="+city+"&units=metric&APPID=7ea8f559ec5f1f0899b61c89d728a8b9";
 
         $(".con > .search_box > .search_butt").css({"background":"#233260 url('pics/loader.gif') no-repeat 50%","background-size": "35%"});
@@ -109,11 +109,10 @@ function gettingJSON(){
             temp=Math.round(json.main.temp);
             weather_icon = json.weather[0].icon;
             weather_desc = json.weather[0].description;
-            
             // if(json.name!=null)   if city exist then creat cookoie else $(".search").val(""); //$(".mask").removeClass("hide").addClass("show");  //404 not found handle
         
-                $.cookie("city_"+city_counter , city, { expires : 2 } );
-                city_counter++;
+            $.cookie("city_"+city_counter , city, { expires : 2 } );
+            city_counter++;
             
             items = $("<div>").addClass("items col-lg-3 col-md-4 col-sm-6");
             item = $("<div>").addClass("item");
@@ -130,11 +129,12 @@ function gettingJSON(){
             $(".search").val("");
 
             $(".con > .search_box > .search_butt").css({"background":"#233260 url('pics/search_icon.png') no-repeat 50%","background-size": "35%"});
-        }).fail(function() {
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            alert(textStatus);
             $(".search").val("");
             $(".mask").removeClass("hide").addClass("show");  //404 not found handle
             $(".con > .search_box > .search_butt").css({"background":"#233260 url('pics/search_icon.png') no-repeat 50%","background-size": "35%"});
-            $.cookie("city_"+city_counter , "" , { expires : -1 } );
+            //$.cookie("city_"+city_counter , "" , { expires : -1 } );
         });  
 
     }
