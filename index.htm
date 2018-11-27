@@ -109,8 +109,7 @@ function gettingJSON(){
             temp=Math.round(json.main.temp);
             weather_icon = json.weather[0].icon;
             weather_desc = json.weather[0].description;
-            // if(json.name!=null)   if city exist then creat cookoie else $(".search").val(""); //$(".mask").removeClass("hide").addClass("show");  //404 not found handle
-        
+            
             $.cookie("city_"+city_counter , city, { expires : 2 } );
             city_counter++;
             
@@ -129,12 +128,10 @@ function gettingJSON(){
             $(".search").val("");
 
             $(".con > .search_box > .search_butt").css({"background":"#233260 url('pics/search_icon.png') no-repeat 50%","background-size": "35%"});
-        }).fail(function(jqXHR, textStatus, errorThrown) {
-            alert(textStatus);
+        }).fail(function() {
             $(".search").val("");
             $(".mask").removeClass("hide").addClass("show");  //404 not found handle
             $(".con > .search_box > .search_butt").css({"background":"#233260 url('pics/search_icon.png') no-repeat 50%","background-size": "35%"});
-            //$.cookie("city_"+city_counter , "" , { expires : -1 } );
         });  
 
     }
